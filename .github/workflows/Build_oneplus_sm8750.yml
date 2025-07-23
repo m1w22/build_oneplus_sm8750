@@ -408,6 +408,7 @@ jobs:
           sed -i 's/^CONFIG_LTO_CLANG_FULL=y/CONFIG_LTO_CLANG_THIN=y/' "$DEFCONFIG"
           sed -i 's/^CONFIG_LTO_CLANG_NONE=y/CONFIG_LTO_CLANG_THIN=y/' "$DEFCONFIG"
           grep -q '^CONFIG_LTO_CLANG_THIN=y' "$DEFCONFIG" || echo 'CONFIG_LTO_CLANG_THIN=y' >> "$DEFCONFIG"
+  
           MAKE_ARGS="LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- \
             RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc \
             PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole \
