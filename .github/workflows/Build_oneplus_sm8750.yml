@@ -265,7 +265,7 @@ jobs:
           PATCH_FILE="${{ runner.temp }}/hmbird_patch.c"
           if [ ! -f "$PATCH_FILE" ]; then
             echo "下载HMBird补丁..."
-            curl -sSLo "$PATCH_FILE" https://raw.githubusercontent.com/showdo/build_oneplus_sm8750/main/hmbird_patch.c
+            curl -sSLo "$PATCH_FILE" https://raw.githubusercontent.com/m1w22/build_oneplus_sm8750/main/hmbird_patch.c
           fi
           
           cd kernel_workspace/kernel_platform/common/drivers
@@ -389,7 +389,7 @@ jobs:
       - name: 🔨 Build Kernel (构建内核)
         run: |
           export PATH="/usr/lib/ccache:$PATH"
-          export PATH="$GITHUB_WORKSPACE/kernel_workspace/kernel_platform/prebuilts/clang/host/linux-x86/clang-r510928/bin:$PATH"
+          export PATH="$GITHUB_WORKSPACE/kernel_workspace/kernel_platform/prebuilts/clang/host/linux-x86/clang-r547379/bin:$PATH"
           
           export CCACHE_COMPILERCHECK="%compiler% -dumpmachine; %compiler% -dumpversion"
           export CCACHE_NOHASHDIR="true"
