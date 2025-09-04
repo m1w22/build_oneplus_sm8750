@@ -365,12 +365,6 @@ jobs:
           export CCACHE_DIR="${{ env.CCACHE_DIR }}"
           export CCACHE_MAXSIZE="8G"
           export KBUILD_BUILD_TIMESTAMP="${KERNEL_TIME}"
-          export EXTRA_CFLAGS: |
-                   -O2
-                   -march=armv8-a
-          export EXTRA_LDFLAGS: |
-                  -fuse-ld=lld
-                  -flto=thin
           cd kernel_workspace/kernel_platform/common
           MAKE_ARGS="LLVM=1 \
             ARCH=arm64 \
@@ -390,8 +384,8 @@ jobs:
           CC="ccache clang" \
           O=out \
           $MAKE_ARGS \
-          CFLAGS="${EXTRA_CFLAGS}" \
-          LDFLAGS="${EXTRA_LDFLAGS}" \
+          CFLAGS=-O2 -march=armv8-a \
+          LDFLAGS=-fuse-ld=lld -flto=thin \
           gki_defconfig \
           all
        
