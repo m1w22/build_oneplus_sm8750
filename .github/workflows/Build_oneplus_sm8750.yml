@@ -389,8 +389,6 @@ jobs:
                   -march=armv8-a \
                   -mcpu=cortex-a55 \
                   -mtune=cortex-a55 \
-                  -mfloat-abi=hard \
-                  -mfpu=neon-fp-armv8 \
                   -fno-common \
                   -ffunction-sections \
                   -fdata-sections \
