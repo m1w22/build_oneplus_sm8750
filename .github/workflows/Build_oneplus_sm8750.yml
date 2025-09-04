@@ -369,7 +369,7 @@ jobs:
           MAKE_ARGS="LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- \
             RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc \
             PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole \
-            LD=ld.lld HOSTLD=ld.lld KCFLAGS+=-O2"
+            LD=ld.lld HOSTLD=ld.lld"
           # if [ "${REPO_MANIFEST}" = "oneplus_ace5_ultra" ]; then
           #     sed -i -E \
           #       -e 's/^([[:space:]]*)int[[:space:]]+ret[[:space:]]*=[[:space:]]*path_umount\(([^)]*)\)[[:space:]]*;$/\1path_umount(\2);/' \
@@ -377,7 +377,26 @@ jobs:
           #       -e '/^[[:space:]]*\(void\)ret;[[:space:]]*$/d' \
           #       drivers/kernelsu/core_hook.c
           # fi
-          make -j$(nproc --all) CC="ccache clang" O=out $MAKE_ARGS gki_defconfig all
+          make -j$(nproc --all) \
+               CC="ccache clang" \
+               O=out \
+               $MAKE_ARGS \
+               KCFLAGS+="\
+                  -O3 \
+                  -fstack-protector-strong \
+                  -fno-omit-frame-pointer \
+                  -pipe \
+                  -march=armv8-a \
+                  -mcpu=cortex-a55 \
+                  -mtune=cortex-a55 \
+                  -mfloat-abi=hard \
+                  -mfpu=neon-fp-armv8 \
+                  -fno-common \
+                  -ffunction-sections \
+                  -fdata-sections \
+                  -flto=thin \
+               " \
+               gki_defconfig all
        
       - name: 📦 Make AnyKernel3 (创建Anykernel3)
         run: |
