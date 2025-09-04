@@ -382,9 +382,7 @@ jobs:
                O=out \
                $MAKE_ARGS \
                KCFLAGS+="\
-                  -O3 \
-                  -fstack-protector-strong \
-                  -fno-omit-frame-pointer \
+                  -O2 \
                   -pipe \
                   -march=armv8-a \
                   -mcpu=cortex-a55 \
