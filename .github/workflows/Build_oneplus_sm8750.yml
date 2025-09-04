@@ -374,6 +374,12 @@ jobs:
             LD=ld.lld \
             HOSTLD=ld.lld \
             KCFLAGS+=-O2"
+          EXTRA_CFLAGS: |
+            -O2
+            -march=armv8-a
+          EXTRA_LDFLAGS: |
+            -fuse-ld=lld
+            -flto=thin
           # if [ "${REPO_MANIFEST}" = "oneplus_ace5_ultra" ]; then
           #     sed -i -E \
           #       -e 's/^([[:space:]]*)int[[:space:]]+ret[[:space:]]*=[[:space:]]*path_umount\(([^)]*)\)[[:space:]]*;$/\1path_umount(\2);/' \
@@ -381,7 +387,14 @@ jobs:
           #       -e '/^[[:space:]]*\(void\)ret;[[:space:]]*$/d' \
           #       drivers/kernelsu/core_hook.c
           # fi
-          make -j$(nproc --all) CC="ccache clang" O=out $MAKE_ARGS gki_defconfig all
+          make -j$(nproc --all) \
+          CC="ccache clang" \
+          O=out \
+          $MAKE_ARGS \
+          CFLAGS="${EXTRA_CFLAGS}" \
+          LDFLAGS="${EXTRA_LDFLAGS}" \
+          gki_defconfig \
+          all
        
       - name: 📦 Make AnyKernel3 (创建Anykernel3)
         run: |
