@@ -11,11 +11,11 @@ on:
           - 'oneplus_ace5_pro'
           - 'oneplus_13t'
           - 'oneplus_pad_2_pro'
-          - 'oneplus_ace5_ultra'
+          - 'oneplus_ace5_ultra2'
           - 'realme_GT7'
           - 'realme_GT7pro'
           - 'realme_GT7pro_Speed'
-        default: 'oneplus_ace5_ultra'
+        default: 'oneplus_ace5_ultra2'
 
       keep_original_settings:
         description: "📝保持原内核名称及构建时间(不懂请保持默认)"
@@ -96,7 +96,7 @@ jobs:
             oneplus_pad_2_pro)
               echo 'DEFAULT_SUFFIX=-android15-8-g7b1f455c7143-ab13591283-4k' >> $GITHUB_ENV
               ;;
-            oneplus_ace5_ultra)
+            oneplus_ace5_ultra2)
               echo 'DEFAULT_SUFFIX=-android15-8-g29d86c5fc9dd-abogki428889875-4k' >> $GITHUB_ENV
               ;;
           esac
@@ -120,7 +120,7 @@ jobs:
               oneplus_pad_2_pro)
                 echo 'KERNEL_TIME=Tue Jun  3 03:22:33 UTC 2025' >> $GITHUB_ENV
                 ;;
-              oneplus_ace5_ultra)
+              oneplus_ace5_ultra2)
                 echo 'KERNEL_TIME=Tue Jul  1 19:48:18 UTC 2025' >> $GITHUB_ENV
                 ;;
             esac
@@ -246,12 +246,12 @@ jobs:
             cp -r ../SukiSU_patch/other/zram/lz4k/lib/* ./common/lib
             cp -r ../SukiSU_patch/other/zram/lz4k/crypto/* ./common/crypto
             cp -r ../SukiSU_patch/other/zram/lz4k_oplus ./common/lib/
-            if [ "$DEVICES_NAME" = "oneplus_ace5_ultra" ] && [ "${REPO_MANIFEST}" != "oneplus_13t" ]; then
+            if [ "$DEVICES_NAME" = "oneplus_ace5_ultra2" ] && [ "${REPO_MANIFEST}" != "oneplus_13t" ]; then
             sed -i 's/^\(SUBLEVEL[[:space:]]*=[[:space:]]*\).*/\166/' ./common/Makefile
             fi
             # Apply patches
             cd ./common
-            if [ "$DEVICES_NAME" != "oneplus_ace5_ultra" ] && [ "${REPO_MANIFEST}" != "realme_GT7" ]; then
+            if [ "$DEVICES_NAME" != "oneplus_ace5_ultra2" ] && [ "${REPO_MANIFEST}" != "realme_GT7" ]; then
                 files=(
                     "lib/lz4/lz4_compress.c"
                     "lib/lz4/lz4_decompress.c"
@@ -270,7 +270,7 @@ jobs:
                 rm -rf ./main.bin
             fi
             
-            if [ "${REPO_MANIFEST}" != "oneplus_13t" ] && [ "${REPO_MANIFEST}" != "oneplus_ace5_ultra" ] && [ "${REPO_MANIFEST}" != "oneplus_pad_2_pro" ]&& [ "${REPO_MANIFEST}" != "realme_GT7" ]; then
+            if [ "${REPO_MANIFEST}" != "oneplus_13t" ] && [ "${REPO_MANIFEST}" != "oneplus_ace5_ultra2" ] && [ "${REPO_MANIFEST}" != "oneplus_pad_2_pro" ]&& [ "${REPO_MANIFEST}" != "realme_GT7" ]; then
                 sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-android15-6.6.patch
                 sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-android15-6.6.patch
             fi
@@ -374,7 +374,7 @@ jobs:
             LD=ld.lld \
             HOSTLD=ld.lld \
             KCFLAGS+=-O2"
-          # if [ "${REPO_MANIFEST}" = "oneplus_ace5_ultra" ]; then
+          # if [ "${REPO_MANIFEST}" = "oneplus_ace5_ultra2" ]; then
           #     sed -i -E \
           #       -e 's/^([[:space:]]*)int[[:space:]]+ret[[:space:]]*=[[:space:]]*path_umount\(([^)]*)\)[[:space:]]*;$/\1path_umount(\2);/' \
           #       -e 's/^([[:space:]]*)return[[:space:]]+path_umount\(([^)]*)\)[[:space:]]*;$/\1path_umount(\2);/' \
