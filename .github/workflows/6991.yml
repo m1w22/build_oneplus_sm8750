@@ -202,14 +202,16 @@ jobs:
 
       - name: 初始化源码仓库及llvm-Clang20工具链
         run: |
-          mkdir kernel_workspace && cd kernel_workspace
           echo "正在克隆设备树仓库..."
+          mkdir -p kernel_workspace && cd kernel_workspace
           aria2c -s16 -x16 -k1M https://github.com/m1w22/android_kernel_modules_and_devicetree_oneplus_mt6991/archive/refs/heads/oneplus/mt6991_v_15.0.2_ace5_ultra.zip -o ace.zip && 
           unzip -q ace.zip && 
           mv "android_kernel_modules_and_devicetree_oneplus_mt6991-oneplus-mt6991_v_15.0.2_ace5_ultra"/* . && 
           rm -rf ace.zip &
-        
+          
           echo "正在克隆源码仓库..."
+          mkdir -p kernel_platform
+          cd kernel_platform
           aria2c -s16 -x16 -k1M https://github.com/m1w22/android_kernel_oneplus_mt6990/archive/refs/heads/oneplus/mt6991_v_15.0.2_ace5_ultra.zip -o common.zip && 
           unzip -q common.zip && 
           mv "android_kernel_oneplus_mt6990-oneplus-mt6991_v_15.0.2_ace5_ultra" common &&
@@ -393,7 +395,7 @@ jobs:
 
       - name: 🔨 Build Kernel (构建内核)
         run: |
-          export PATH="/usr/lib/ccache:$GITHUB_WORKSPACE/kernel_workspace/kernel_platform/prebuilts/clang/host/linux-x86/clang-r510928/bin:$PATH"          
+          export PATH="/usr/lib/ccache:$GITHUB_WORKSPACE/kernel_workspace/kernel_platform/clang20/bin:$PATH"          
           export CCACHE_COMPILERCHECK="%compiler% -dumpmachine; %compiler% -dumpversion"
           export CCACHE_NOHASHDIR="true"
           export CCACHE_HARDLINK="true"
@@ -404,8 +406,8 @@ jobs:
           MAKE_ARGS="LLVM=1 \
             ARCH=arm64 \
             CROSS_COMPILE=aarch64-linux-gnu- \
-            RUSTC=../../prebuilts/rust/linux-x86/1.73.0b/bin/rustc \
-            PAHOLE=../../prebuilts/kernel-build-tools/linux-x86/bin/pahole \
+            RUSTC=../../build-tools/bin/rustc \
+            PAHOLE=../../build-tools/bin/pahole \
             LD=ld.lld \
             HOSTLD=ld.lld \
             KCFLAGS+=-O2"
